@@ -58,7 +58,7 @@ The following inputs are required:
 - `github-token`: leave this be :metal: - needed to access the added or modified files
 
 
-## :no_entry: Responding to Violations
+## :warning: Responding to Violations
 
 Note that this action only checks to see if action violations are detected and writes that data to the `violations` output. In this sample,
 we use a downstream action to respond to any violations that occur. By using the `actions/github-script@v2` action, we can execute
