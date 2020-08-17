@@ -20,20 +20,8 @@ async function run(): Promise<void> {
     // const addedFiles = args[3];
     // const changedFiles = args[4];
 
-    let doc: any = yaml.safeLoad(fs.readFileSync(".github/workflows/enforce-action-policy.yml", "utf-8"));
-    console.log(doc);
-
-    Object.entries(doc.jobs).forEach(([key, value]) => {
-
-      if(value.steps)
-      {
-        console.log(key + " - " + value);     
-      }
-    });
-
-    console.log(doc.jobs[0]);
-
-    return;
+    // let doc: any = yaml.safeLoad(fs.readFileSync(".github/workflows/enforce-action-policy.yml", "utf-8"));
+    // console.log(doc);
 
     const policyType = core.getInput("policy", { required: true })
     const policyUrl = core.getInput("policy-url", { required: true })
