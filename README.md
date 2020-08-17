@@ -88,13 +88,13 @@ Keeping the response to the violations in a separate step but in a Javascript fi
 you choose to respond while still providing access to context, core, octokit and io.
 
 
-## :boom: In Action
+<!-- ## :boom: In Action
 
 **A commit was made that included an update to a workflow file.**
 ![Action Console Log](assets/action_log.png?raw=true)
 
 **Because a violation was detected, a comment is added to the pull request and labeled. If triggered by a code push, a new issue is created and assigned to the user who pushed the code.**
-![Pull request commented on due to violation](assets/pull_request.png?raw=true)
+![Pull request commented on due to violation](assets/pull_request.png?raw=true) -->
 
 
 ### Improvements
