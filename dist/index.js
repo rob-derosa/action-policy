@@ -1184,7 +1184,10 @@ function run() {
             // const changedFiles = args[4];
             let doc = js_yaml_1.default.safeLoad(fs_1.default.readFileSync(".github/workflows/enforce-action-policy.yml", "utf-8"));
             console.log(doc);
-            doc.jobs.forEach((j) => {
+            Object.entries(doc.jobs).forEach(([key, value]) => {
+                if (value.steps) {
+                    console.log(key + " - " + value);
+                }
             });
             console.log(doc.jobs[0]);
             return;
@@ -1209,8 +1212,8 @@ function run() {
                     commits = [];
             }
             commits = commits.filter((c) => !c.parents || 1 === c.parents.length);
-            for (let index = 0; index < commits.length; index++) {
-                var f = yield ghf.getFilesInCommit(commits[index], core.getInput('github-token'));
+            for (let i = 0; i < commits.length; i++) {
+                var f = yield ghf.getFilesInCommit(commits[i], core.getInput('github-token'));
                 allFiles = allFiles.concat(f);
             }
             // console.log("FILES ADDED or MODIFIED")

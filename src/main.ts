@@ -23,8 +23,12 @@ async function run(): Promise<void> {
     let doc: any = yaml.safeLoad(fs.readFileSync(".github/workflows/enforce-action-policy.yml", "utf-8"));
     console.log(doc);
 
-    doc.jobs.forEach((j: any) => {
-      
+    Object.entries(doc.jobs).forEach(([key, value]) => {
+
+      if(value.steps)
+      {
+        console.log(key + " - " + value);     
+      }
     });
 
     console.log(doc.jobs[0]);
@@ -56,8 +60,8 @@ async function run(): Promise<void> {
 
     commits = commits.filter((c: any) => ! c.parents || 1 === c.parents.length);
 
-    for (let index = 0; index < commits.length; index++) {
-      var f = await ghf.getFilesInCommit(commits[index], core.getInput('github-token'));
+    for (let i = 0; i < commits.length; i++) {
+      var f = await ghf.getFilesInCommit(commits[i], core.getInput('github-token'));
       allFiles = allFiles.concat(f);
     }
 

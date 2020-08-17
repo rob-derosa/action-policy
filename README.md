@@ -2,7 +2,7 @@
 
 This GitHub action allows you to provide a list of actions allowed or prohibited to be enforced within this repository. If a code push or pull request contains changes to a workflow `yaml` file containing a reference to an action that violates the action policy, a `violations` output value is set containing an array of the offending acions in JSON format.
 
-:construction_worker: This action is in development
+:construction_worker: This action is undergoing renovations.
 
 ## :dart: Usage
 
