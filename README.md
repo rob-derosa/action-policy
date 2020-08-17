@@ -77,7 +77,7 @@ steps:
         await script({github})
 ```
 
-Here we are executing logic contained in the [.github/workflows/action_violation.js](.github/workflows/action_violation.js) file.
+Here, we are executing logic contained in the [.github/workflows/action_violation.js](.github/workflows/action_violation.js) file.
 If a a violation occurs:
 * triggered by code push
   * an issue will be created, labeled with `Action Violation`, containing a link to the commit, and assigned to the user pushing the code
