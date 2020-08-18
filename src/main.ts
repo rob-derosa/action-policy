@@ -90,7 +90,6 @@ async function run(): Promise<void> {
     //look for any workflow file updates
     allFiles.forEach((file) => {
       let filePath = path.parse(file);
-      console.log(filePath);
       if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yml") &&
         filePath.dir.toLowerCase().endsWith(".github/workflows")) {
         workflowFilePaths.push(file);
@@ -116,9 +115,13 @@ async function run(): Promise<void> {
         });
       });
 
+    console.log("\nACTION POLICY LIST");
+    console.log("---------------------------");
+    actionPolicyList.forEach((item) => {
+      console.log(item.toString());
+    });
+
     workflowFilePaths.forEach(wf => {
-      let parsed;
-      let referencedActions = new Array<Action>();
       let workflow: Workflow = { filePath: wf, actions: Array<Action>() };
       workflowFiles.push(workflow);
 
@@ -127,7 +130,6 @@ async function run(): Promise<void> {
         let actionStrings = getPropertyValues(yaml, "uses")
 
         actionStrings.forEach(as => {
-          console.log(as);
           workflow.actions.push(new Action(as));
         });
       } catch (error) {
@@ -145,7 +147,7 @@ async function run(): Promise<void> {
       let violation: Workflow = { filePath: workflow.filePath, actions: Array<Action>() };
       workflow.actions.forEach((action: Action) => {
 
-        if(action.author == ".")
+        if (action.author == ".")
           return;
 
         let match = actionPolicyList.find(policy => policy.author === action.author &&
@@ -164,18 +166,15 @@ async function run(): Promise<void> {
         }
       });
 
-      if (violation.actions.length > 0)
+      if (violation.actions.length > 0) {
         actionViolations.push(violation);
-    });
-
-    console.log("\nACTION POLICY LIST");
-    console.log("---------------------------");
-    actionPolicyList.forEach((item) => {
-      console.log(item.toString());
+      } else {
+        console.log("No violations detected");
+      }
     });
 
     if (actionViolations.length > 0) {
-      console.log("\n!!! ACTION VIOLATIONS DETECTED !!!");
+      console.log("\n!!! ACTION POLICY VIOLATIONS DETECTED !!!");
       console.log("---------------------------");
 
       actionViolations.forEach(workflow => {
@@ -187,11 +186,13 @@ async function run(): Promise<void> {
       });
 
       if (failIfViolations) {
-        core.setFailed("Action violations detected");
+        core.setFailed("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
         core.setOutput("violations", actionViolations);
       } else {
-        console.log("\nAll pacakges referenced conform to the policy provided.");
+        console.log("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
       }
+    } else {
+      console.log("\nAll workflow files contain actions that conform to the policy provided.");
     }
   } catch (error) {
     console.log(error);

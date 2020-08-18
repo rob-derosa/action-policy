@@ -1,6 +1,6 @@
 # :construction: Action Policy Action 
 
-This GitHub action allows you to provide a list of actions allowed or prohibited to be enforced within this repository. If a code push or pull request contains changes to a workflow `yaml` file containing a reference to an action that violates the action policy, a `violations` output value is set containing an array of the offending acions in JSON format.
+This GitHub action allows you to provide a list of actions allowed or prohibited to be enforced within this repository. If a code push or pull request contains changes to a workflow `yaml` file containing a reference to an action that violates the action policy, a `violations` output value is set containing an array of the offending actions in JSON format.
 
 :construction_worker: This action is undergoing renovations.
 
@@ -36,16 +36,18 @@ jobs:
           violations: ${{steps.action-policy.outputs.violations}}
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/.github/workflows/action_violation.js`)
-            await script({github})
+            await script({github, context, core})
 ```
 
 Sample content of `prohibit_policy.json`
 ```json
-[
+{
+  "actions" : [
     "externaldev/some-neat-action@v2",
     "badactor/give-me-your-data@v4.3b",
-    "staleauthor/out-of-date-action"
-]
+    "staleauthor/out-of-date-action@*",
+    "untrustedauthor/*"
+[
 ```
 
 ## :pencil: Configuration

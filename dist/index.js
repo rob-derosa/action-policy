@@ -1236,7 +1236,6 @@ function run() {
             //look for any workflow file updates
             allFiles.forEach((file) => {
                 let filePath = path_1.default.parse(file);
-                console.log(filePath);
                 if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yml") &&
                     filePath.dir.toLowerCase().endsWith(".github/workflows")) {
                     workflowFilePaths.push(file);
@@ -1258,16 +1257,18 @@ function run() {
                     actionPolicyList.push(new Action(as));
                 });
             });
+            console.log("\nACTION POLICY LIST");
+            console.log("---------------------------");
+            actionPolicyList.forEach((item) => {
+                console.log(item.toString());
+            });
             workflowFilePaths.forEach(wf => {
-                let parsed;
-                let referencedActions = new Array();
                 let workflow = { filePath: wf, actions: Array() };
                 workflowFiles.push(workflow);
                 try {
                     let yaml = js_yaml_1.default.safeLoad(fs_1.default.readFileSync(workflow.filePath, "utf-8"));
                     let actionStrings = getPropertyValues(yaml, "uses");
                     actionStrings.forEach(as => {
-                        console.log(as);
                         workflow.actions.push(new Action(as));
                     });
                 }
@@ -1298,16 +1299,15 @@ function run() {
                         }
                     }
                 });
-                if (violation.actions.length > 0)
+                if (violation.actions.length > 0) {
                     actionViolations.push(violation);
-            });
-            console.log("\nACTION POLICY LIST");
-            console.log("---------------------------");
-            actionPolicyList.forEach((item) => {
-                console.log(item.toString());
+                }
+                else {
+                    console.log("No violations detected");
+                }
             });
             if (actionViolations.length > 0) {
-                console.log("\n!!! ACTION VIOLATIONS DETECTED !!!");
+                console.log("\n!!! ACTION POLICY VIOLATIONS DETECTED !!!");
                 console.log("---------------------------");
                 actionViolations.forEach(workflow => {
                     console.log(`\nWorkflow: ${workflow.filePath}`);
@@ -1316,12 +1316,15 @@ function run() {
                     });
                 });
                 if (failIfViolations) {
-                    core.setFailed("Action violations detected");
+                    core.setFailed("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
                     core.setOutput("violations", actionViolations);
                 }
                 else {
-                    console.log("\nAll pacakges referenced conform to the policy provided.");
+                    console.log("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
                 }
+            }
+            else {
+                console.log("\nAll workflow files contain actions that conform to the policy provided.");
             }
         }
         catch (error) {
