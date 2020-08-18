@@ -15,10 +15,10 @@ export async function getFilesInCommit(commit: any, token: string): Promise<stri
     if (result && result.data) {
         const files = result.data.files;
 
-        // files.forEach(element => {
-        //     console.log(element);
-        //     console.log(element.status);
-        // });
+        files.forEach(element => {
+            console.log(element);
+            console.log(element.status);
+        });
 
         files
             .filter(file => file.status == "modified" || file.status == "added")
