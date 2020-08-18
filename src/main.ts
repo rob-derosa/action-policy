@@ -186,6 +186,8 @@ async function run(): Promise<void> {
         workflow.actions.forEach(action => {
           console.log(` - ${action.toString()}`);
         });
+
+        console.log();
       });
 
       if (failIfViolations) {

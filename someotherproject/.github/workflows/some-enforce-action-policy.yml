@@ -15,7 +15,7 @@ jobs:
         id: action-policy
         with:
           policy: allow
-          policy-url: "https://gist.githubusercontent.com/rob-derosa/ba7ecb82b164eca456142337acbdf6c0/raw/baf15a135e3343a0caca2b8d1e40892f2465eedd/actions_policy.json"
+          policy-url: "https://gist.githubusercontent.com/rob-derosa/ba7ecb82b164eca456142337acbdf6c0/raw/9c042cc87dad7eb937246114c47a49561da72f41/actions_policy.json"
           fail-if-violations: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/github-script@v2
@@ -26,4 +26,5 @@ jobs:
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/.github/workflows/action_violation.js`)
             await script({github, context, core})
+            
             

@@ -13,7 +13,7 @@ module.exports = async (gh) => {
     "The following workflow files contain actions that violate the action policy put in place by the administrator of this repository:\n";
 
   packages.forEach((item) => {
-    bodyMessage += `\n- [ ] :x: ${item.name} - ${item.version}`;
+    bodyMessage += `\n- [ ] :x: ${item.toString()}`;
   });
   bodyMessage += "\n\nPlease choose alternate actions that conform to the action policy and re-attempt."
 

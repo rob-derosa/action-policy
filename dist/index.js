@@ -1317,6 +1317,7 @@ function run() {
                     workflow.actions.forEach(action => {
                         console.log(` - ${action.toString()}`);
                     });
+                    console.log();
                 });
                 if (failIfViolations) {
                     core.setFailed("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
