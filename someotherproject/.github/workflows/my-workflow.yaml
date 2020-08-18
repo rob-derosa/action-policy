@@ -8,7 +8,9 @@ jobs:
   enforce-package-policy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      - uses: bad-actor\unstrusted-action@latest
+      - uses: external-author\very-cool-action@v6
       - uses: ./
         name: "Check for action violations"
         id: action-policy
