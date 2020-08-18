@@ -1191,15 +1191,15 @@ function run() {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const args = process.argv.slice(2);
-            const policyType = args[0];
-            const policyUrl = args[1];
-            const gitHubToken = args[2];
-            const failIfViolations = false;
-            // const policyType = core.getInput("policy", { required: true })
-            // const policyUrl = core.getInput("policy-url", { required: true })
-            // const gitHubToken = core.getInput("github-token", { required: true })
-            // const failIfViolations = core.getInput("fail-if-violations", { required: false }) == "true"
+            // const args = process.argv.slice(2);
+            // const policyType = args[0];
+            // const policyUrl = args[1]
+            // const gitHubToken = args[2];
+            // const failIfViolations = false
+            const policyType = core.getInput("policy", { required: true });
+            const policyUrl = core.getInput("policy-url", { required: true });
+            const gitHubToken = core.getInput("github-token", { required: true });
+            const failIfViolations = core.getInput("fail-if-violations", { required: false }) == "true";
             if (!policyType || (policyType != "allow" && policyType != "prohibit"))
                 throw new Error("policy must be set to 'allow' or 'prohibit'");
             if (!policyUrl)
