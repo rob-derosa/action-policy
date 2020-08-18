@@ -171,7 +171,7 @@ async function run(): Promise<void> {
       if (violation.actions.length > 0) {
         actionViolations.push(violation);
       } else {
-        console.log("No violations detected");
+        console.log("\nNo violations detected");
       }
     });
 

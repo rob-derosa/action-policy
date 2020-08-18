@@ -8,7 +8,7 @@ jobs:
   enforce-package-policy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       - uses: ./
         name: "Check for action violations"
         id: action-policy
@@ -27,4 +27,3 @@ jobs:
             await script({github, context, core})
             
 
-            

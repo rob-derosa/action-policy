@@ -1305,7 +1305,7 @@ function run() {
                     actionViolations.push(violation);
                 }
                 else {
-                    console.log("No violations detected");
+                    console.log("\nNo violations detected");
                 }
             });
             if (actionViolations.length > 0) {
