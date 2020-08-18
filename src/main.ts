@@ -141,11 +141,12 @@ async function run(): Promise<void> {
 
     workflowFiles.forEach((workflow: Workflow) => {
 
-      console.log(`Evaluating '${workflow.filePath}'`);
+      console.log(`\nEvaluating '${workflow.filePath}'`);
       console.log("---------------------------");
 
       let violation: Workflow = { filePath: workflow.filePath, actions: Array<Action>() };
       workflow.actions.forEach((action: Action) => {
+        console.log(` - ${action.toString()}`);
 
         if (action.author == ".")
           return;
@@ -211,7 +212,7 @@ function getPropertyValues(obj: any, propName: string, values?: string[]): strin
       } else {
         if (property == propName) {
           values.push(obj[property]);
-          console.log(property + "   " + obj[property]);
+          //console.log(property + "   " + obj[property]);
         }
       }
     }

@@ -1279,10 +1279,11 @@ function run() {
                 }
             });
             workflowFiles.forEach((workflow) => {
-                console.log(`Evaluating '${workflow.filePath}'`);
+                console.log(`\nEvaluating '${workflow.filePath}'`);
                 console.log("---------------------------");
                 let violation = { filePath: workflow.filePath, actions: Array() };
                 workflow.actions.forEach((action) => {
+                    console.log(` - ${action.toString()}`);
                     if (action.author == ".")
                         return;
                     let match = actionPolicyList.find(policy => policy.author === action.author &&
@@ -1344,7 +1345,7 @@ function getPropertyValues(obj, propName, values) {
             else {
                 if (property == propName) {
                     values.push(obj[property]);
-                    console.log(property + "   " + obj[property]);
+                    //console.log(property + "   " + obj[property]);
                 }
             }
         }
