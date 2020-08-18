@@ -144,6 +144,10 @@ async function run(): Promise<void> {
 
       let violation: Workflow = { filePath: workflow.filePath, actions: Array<Action>() };
       workflow.actions.forEach((action: Action) => {
+
+        if(action.author == "./")
+          return;
+
         let match = actionPolicyList.find(policy => policy.author === action.author &&
           (policy.name === "*" || action.name === policy.name) &&
           (policy.ref === "*" || action.ref == policy.ref));
