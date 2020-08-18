@@ -8,7 +8,7 @@ module.exports = async (gh) => {
   }
 
   let workflows = JSON.parse(violations);
-  let bodyMessage = "## :alert: Action Policy Violation\n\n" +
+  let bodyMessage = "## :warning: Action Policy Violation\n\n" +
     `Commit: ${gh.context.sha}\n\n` +
     "The following workflow files contain actions that violate the action policy put in place by the administrator of this repository:\n";
 
