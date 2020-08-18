@@ -8,12 +8,12 @@ module.exports = async (gh) => {
   }
 
   let workflows = JSON.parse(violations);
-  let bodyMessage = "## :zap: Action Policy Violation\n\n" +
+  let bodyMessage = "## :alert: Action Policy Violation\n\n" +
     `Commit: ${gh.context.sha}\n\n` +
     "The following workflow files contain actions that violate the action policy put in place by the administrator of this repository:\n";
 
   workflows.forEach((item) => {
-    bodyMessage += `\n:x: ${item.filePath}`;
+    bodyMessage += `\n\n:x: ${item.filePath}`;
     item.actions.forEach((action) => {
       bodyMessage += `\n- [ ] ${action.author}\\${action.name}@${action.ref}`;
     });
