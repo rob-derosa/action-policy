@@ -1191,6 +1191,7 @@ function run() {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            const line = "-------------------------------------------";
             // const args = process.argv.slice(2);
             // const policyType = args[0];
             // const policyUrl = args[1]
@@ -1258,7 +1259,7 @@ function run() {
                 });
             });
             console.log("\nACTION POLICY LIST");
-            console.log("---------------------------");
+            console.log(line);
             actionPolicyList.forEach((item) => {
                 console.log(item.toString());
             });
@@ -1280,7 +1281,7 @@ function run() {
             });
             workflowFiles.forEach((workflow) => {
                 console.log(`\nEvaluating '${workflow.filePath}'`);
-                console.log("---------------------------");
+                console.log(line);
                 let violation = { filePath: workflow.filePath, actions: Array() };
                 workflow.actions.forEach((action) => {
                     console.log(` - ${action.toString()}`);
@@ -1308,20 +1309,17 @@ function run() {
                 }
             });
             if (actionViolations.length > 0) {
+                core.setOutput("violations", actionViolations);
                 console.log("\n!!! ACTION POLICY VIOLATIONS DETECTED !!!");
-                console.log("---------------------------");
+                console.log(line);
                 actionViolations.forEach(workflow => {
-                    console.log(`\nWorkflow: ${workflow.filePath}`);
+                    console.log(`Workflow: ${workflow.filePath}`);
                     workflow.actions.forEach(action => {
                         console.log(` - ${action.toString()}`);
                     });
                 });
                 if (failIfViolations) {
                     core.setFailed("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
-                    core.setOutput("violations", actionViolations);
-                }
-                else {
-                    console.log("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
                 }
             }
             else {

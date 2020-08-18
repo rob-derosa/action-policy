@@ -34,6 +34,7 @@ export interface Workflow {
 
 async function run(): Promise<void> {
   try {
+    const line = "-------------------------------------------";
     // const args = process.argv.slice(2);
     // const policyType = args[0];
     // const policyUrl = args[1]
@@ -116,7 +117,7 @@ async function run(): Promise<void> {
       });
 
     console.log("\nACTION POLICY LIST");
-    console.log("---------------------------");
+    console.log(line);
     actionPolicyList.forEach((item) => {
       console.log(item.toString());
     });
@@ -142,7 +143,7 @@ async function run(): Promise<void> {
     workflowFiles.forEach((workflow: Workflow) => {
 
       console.log(`\nEvaluating '${workflow.filePath}'`);
-      console.log("---------------------------");
+      console.log(line);
 
       let violation: Workflow = { filePath: workflow.filePath, actions: Array<Action>() };
       workflow.actions.forEach((action: Action) => {
@@ -175,11 +176,12 @@ async function run(): Promise<void> {
     });
 
     if (actionViolations.length > 0) {
+      core.setOutput("violations", actionViolations);
       console.log("\n!!! ACTION POLICY VIOLATIONS DETECTED !!!");
-      console.log("---------------------------");
+      console.log(line);
 
       actionViolations.forEach(workflow => {
-        console.log(`\nWorkflow: ${workflow.filePath}`);
+        console.log(`Workflow: ${workflow.filePath}`);
 
         workflow.actions.forEach(action => {
           console.log(` - ${action.toString()}`);
@@ -188,9 +190,6 @@ async function run(): Promise<void> {
 
       if (failIfViolations) {
         core.setFailed("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
-        core.setOutput("violations", actionViolations);
-      } else {
-        console.log("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
       }
     } else {
       console.log("\nAll workflow files contain actions that conform to the policy provided.");
