@@ -25,10 +25,3 @@ jobs:
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/.github/workflows/action_violation.js`)
             await script({github, context, core})
-            
-
-
-
-            
-
-
