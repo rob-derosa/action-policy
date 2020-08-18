@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "args": ["prohibit", "https://gist.githubusercontent.com/rob-derosa/965f4d51e5eb006a928cffe176998923/raw/0c8857f2e17f6d21179e26d56f28f733aeaee5db/policy.json", "123123123", "[\".github/workflows/enforce-pacakge-policy.yml\",\"package.json\"]", "[]"],
+            "args": ["allow", "https://gist.githubusercontent.com/rob-derosa/ba7ecb82b164eca456142337acbdf6c0/raw/f3db711432855ff3c1234f0cd4778d5e5b378a7f/actions_policy.json", "123123123"],
             "program": "${workspaceFolder}/lib/main.js"
         }
     ]

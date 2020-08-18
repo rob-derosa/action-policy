@@ -3,30 +3,53 @@ import * as github from "@actions/github";
 import fetch from "node-fetch";
 import fs from "fs";
 import * as ghf from "./github_files";
-import compareVersions from "compare-versions";
-import yaml from "js-yaml"
+import yamlParse from "js-yaml"
+import path from "path";
 
-export interface Package {
+export class Action {
+
+  constructor(actionString: string) {
+    actionString = actionString.toLowerCase();
+    let as = actionString.split('/');
+    this.author = as[0];
+
+    let action = as[1].split('@');
+    this.name = action[0];
+    this.ref = (action.length > 1) ? action[1] : "*";
+  }
+
+  toString(): string {
+    return `${this.author}\\${this.name}@${this.ref}`;
+  }
+
+  author: string;
   name: string;
-  version: string;
+  ref: string;
+}
+
+export interface Workflow {
+  filePath: string;
+  actions: Array<Action>;
 }
 
 async function run(): Promise<void> {
   try {
     const args = process.argv.slice(2);
-    // const policyType = args[0];
-    // const policyUrl = args[1]
-    // const gitHubToken = args[2];
-    // const addedFiles = args[3];
-    // const changedFiles = args[4];
+    const policyType = args[0];
+    const policyUrl = args[1]
+    const gitHubToken = args[2];
+    const failIfViolations = false
+    // const policyType = core.getInput("policy", { required: true })
+    // const policyUrl = core.getInput("policy-url", { required: true })
+    // const gitHubToken = core.getInput("github-token", { required: true })
+    // const failIfViolations = core.getInput("fail-if-violations", { required: false }) == "true"
 
-    // let doc: any = yaml.safeLoad(fs.readFileSync(".github/workflows/enforce-action-policy.yml", "utf-8"));
-    // console.log(doc);
+    if (!policyType || (policyType != "allow" && policyType != "prohibit"))
+      throw new Error("policy must be set to 'allow' or 'prohibit'");
 
-    const policyType = core.getInput("policy", { required: true })
-    const policyUrl = core.getInput("policy-url", { required: true })
-    const gitHubToken = core.getInput("github-token", { required: true })
-    const failIfViolations = core.getInput("fail-if-violations", { required: false }) == "true"
+    if (!policyUrl)
+      throw new Error("policy-url not set");
+
     const client = github.getOctokit(gitHubToken);
 
     //get all the modified or added files in the commits
@@ -46,7 +69,7 @@ async function run(): Promise<void> {
         commits = [];
     }
 
-    commits = commits.filter((c: any) => ! c.parents || 1 === c.parents.length);
+    commits = commits.filter((c: any) => !c.parents || 1 === c.parents.length);
 
     for (let i = 0; i < commits.length; i++) {
       var f = await ghf.getFilesInCommit(commits[i], core.getInput('github-token'));
@@ -58,54 +81,25 @@ async function run(): Promise<void> {
     //   console.log(f);
     // });
 
-    if (!policyType || (policyType != "allow" && policyType != "prohibit"))
-      throw new Error("policy must be set to 'allow' or 'prohibit'");
+    let actionPolicyList = new Array<Action>();
+    let actionViolations = new Array<Workflow>();
+    let workflowFiles = new Array<Workflow>();
+    let workflowFilePaths = new Array<string>();
 
-    if (!policyUrl)
-      throw new Error("policy-url not set");
-
-    let referencedPackages = new Array<Package>();
-    let packagePolicyList = new Array<Package>();
-    let packageViolations = new Array<Package>();
-
-    //Look to see if the package.json manifest was updated or added
-    let manifestFilePath;
-
+    //look for any workflow file updates
     allFiles.forEach((file) => {
-      if (file.endsWith("package.json")) {
-        manifestFilePath = file;
-        return;
+      let filePath = path.parse(file);
+      console.log(filePath);
+      if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yaml") &&
+        filePath.dir.toLowerCase().endsWith(".github/workflows")) {
+        workflowFilePaths.push(file);
       }
     });
 
-    //No manifest updates - bye!
-    if (!manifestFilePath) {
-      console.log("No package updates detected.")
+    //No workflow updates - byeee!
+    if (workflowFilePaths.length == 0) {
+      console.log("No workflow file updates detected.")
       return;
-    }
-
-    let content: any = fs.readFileSync(manifestFilePath, 'utf8');
-    let parsed;
-
-    try {
-      parsed = JSON.parse(content);
-
-      //Load up the referenced dependencies
-      Object.entries(parsed.dependencies).forEach(([key, value]) => {
-        let val = value as string;
-        if (val.startsWith("^") || val.startsWith("~")) {
-          val = val.substring(1);
-        }
-
-        referencedPackages.push({
-          name: key,
-          version: val
-        });
-      });
-    } catch (error) {
-      console.log(error);
-      core.debug(error.message);
-      core.setFailed("Unable to parse the package.json manifest file - please ensure it's formatted properly.")
     }
 
     //Load up the remote policy list
@@ -114,73 +108,109 @@ async function run(): Promise<void> {
         return response.json();
       })
       .then(function (json) {
-        Object.entries(json).forEach(([key, value]) => {
-          let val = value as string;
-          if (val.startsWith("^") || val.startsWith("~")) {
-            val = val.substring(1);
-          }
+        let actions: string[] = json.actions;
 
-          packagePolicyList.push({
-            name: key,
-            version: val
-          });
+        actions.forEach(as => {
+          actionPolicyList.push(new Action(as));
         });
       });
 
-    referencedPackages.forEach((referenced: Package) => {
-      let match = packagePolicyList.find(policy => policy.name === referenced.name &&
-        (policy.version === "*" || compareVersions(policy.version, referenced.version) == 0));
+    workflowFilePaths.forEach(wf => {
+      let parsed;
+      let referencedActions = new Array<Action>();
+      let workflow: Workflow = { filePath: wf, actions: Array<Action>() };
+      workflowFiles.push(workflow);
 
-      if (policyType == "allow") {
+      try {
+        let yaml: any = yamlParse.safeLoad(fs.readFileSync(workflow.filePath, "utf-8"));
+        let actionStrings = getPropertyValues(yaml, "uses")
 
-        if (!match) {
-          packageViolations.push(referenced);
-        }
-
-      } else if (policyType == "prohibit") {
-
-        if (match) {
-          packageViolations.push(referenced);
-        }
+        actionStrings.forEach(as => {
+          console.log(as);
+          workflow.actions.push(new Action(as));
+        });
+      } catch (error) {
+        console.log(error);
+        core.debug(error.message);
+        core.setFailed(`Unable to parse workflow file '${workflow.filePath}' - please ensure it's formatted properly.`)
       }
     });
 
-    client.issues.createComment
+    workflowFiles.forEach((workflow: Workflow) => {
 
-    console.log("\nREFERENCED PACKAGE LIST");
-    console.log("---------------------------");
-    referencedPackages.forEach((item) => {
-      console.log(`${item.name} - ${item.version}`);
+      console.log(`Evaluating '${workflow.filePath}'`);
+      console.log("---------------------------");
+
+      let violation: Workflow = { filePath: workflow.filePath, actions: Array<Action>() };
+      workflow.actions.forEach((action: Action) => {
+        let match = actionPolicyList.find(policy => policy.author === action.author &&
+          (policy.name === "*" || action.name === policy.name) &&
+          (policy.ref === "*" || action.ref == policy.ref));
+
+        if (policyType == "allow") {
+          if (!match) {
+            violation.actions.push(action);
+          }
+        } else if (policyType == "prohibit") {
+
+          if (match) {
+            violation.actions.push(action);
+          }
+        }
+      });
+
+      if (violation.actions.length > 0)
+        actionViolations.push(violation);
     });
 
-    console.log("\nPACKAGE POLICY LIST");
+    console.log("\nACTION POLICY LIST");
     console.log("---------------------------");
-    packagePolicyList.forEach((item) => {
-      console.log(`${item.name} - ${item.version}`);
+    actionPolicyList.forEach((item) => {
+      console.log(item.toString());
     });
 
-    if (packageViolations.length > 0) {
-      console.log("\n");
+    if (actionViolations.length > 0) {
+      console.log("\n!!! ACTION VIOLATIONS DETECTED !!!");
+      console.log("---------------------------");
 
-      let failMessage = "!!! PACKAGE POLICY VIOLATIONS DETECTED !!!";
+      actionViolations.forEach(workflow => {
+        console.log(`\nWorkflow: ${workflow.filePath}`);
+
+        workflow.actions.forEach(action => {
+          console.log(` - ${action.toString()}`);
+        });
+      });
+
       if (failIfViolations) {
-        core.setFailed(failMessage);
+        core.setFailed("Action violations detected");
+        core.setOutput("violations", actionViolations);
       } else {
-        console.log(failMessage);
+        console.log("\nAll pacakges referenced conform to the policy provided.");
       }
-
-      core.setOutput("violations", packageViolations);
-    } else {
-      console.log("\nAll pacakges referenced conform to the policy provided.");
     }
-
-    packageViolations.forEach((item) => {
-      console.log(`${item.name} - ${item.version}`);
-    });
   } catch (error) {
     console.log(error);
     core.setFailed(error.message)
   }
+}
+
+function getPropertyValues(obj: any, propName: string, values?: string[]): string[] {
+
+  if (!values) values = [];
+
+  for (var property in obj) {
+    if (obj.hasOwnProperty(property)) {
+      if (typeof obj[property] == "object") {
+        getPropertyValues(obj[property], propName, values);
+      } else {
+        if (property == propName) {
+          values.push(obj[property]);
+          console.log(property + "   " + obj[property]);
+        }
+      }
+    }
+  }
+  return values;
 }
 
 run()
