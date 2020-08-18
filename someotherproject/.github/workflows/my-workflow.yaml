@@ -8,6 +8,8 @@ jobs:
   enforce-package-policy:
     runs-on: ubuntu-latest
     steps:
+      - uses: bad-actor/unstrusted-action@beta
+      - uses: external-author/very-cool-action@v6
       - uses: actions/checkout@v2
       - uses: ./
         name: "Check for action violations"
