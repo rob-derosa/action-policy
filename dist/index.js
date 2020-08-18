@@ -1282,7 +1282,7 @@ function run() {
                 console.log("---------------------------");
                 let violation = { filePath: workflow.filePath, actions: Array() };
                 workflow.actions.forEach((action) => {
-                    if (action.author == "./")
+                    if (action.author == ".")
                         return;
                     let match = actionPolicyList.find(policy => policy.author === action.author &&
                         (policy.name === "*" || action.name === policy.name) &&
