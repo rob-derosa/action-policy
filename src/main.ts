@@ -39,6 +39,7 @@ async function run(): Promise<void> {
     // const policyUrl = args[1]
     // const gitHubToken = args[2];
     // const failIfViolations = false
+
     const policyType = core.getInput("policy", { required: true })
     const policyUrl = core.getInput("policy-url", { required: true })
     const gitHubToken = core.getInput("github-token", { required: true })

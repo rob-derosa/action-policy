@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "args": ["allow", "https://gist.githubusercontent.com/rob-derosa/ba7ecb82b164eca456142337acbdf6c0/raw/f3db711432855ff3c1234f0cd4778d5e5b378a7f/actions_policy.json", "123123123"],
+            "args": ["allow", "https://gist.githubusercontent.com/rob-derosa/ba7ecb82b164eca456142337acbdf6c0/raw/0c177df0dfa3e6dfe65007dd9ed49f1caafb8741/actions_policy.json", "123123123"],
             "program": "${workspaceFolder}/lib/main.js"
         }
     ]
