@@ -50,7 +50,7 @@ module.exports = async (gh) => {
       body: bodyMessage
     })
 
-    console.log(`Pull request labeled and commented - ${issue.data.number} - ${issue.data.html_url}`);
+    console.log(`Pull request labeled and commented - ${issue.data.html_url}`);
   }
 
   gh.core.setFailed("!!! ACTION POLICY VIOLATIONS DETECTED !!!");
