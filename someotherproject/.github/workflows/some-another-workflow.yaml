@@ -18,6 +18,7 @@ jobs:
           fail-if-violations: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: someactions/github-script@v2
+      - uses: someactions/github-script@v6sdasdsd
         name: "Respond to action violations"
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -30,4 +31,3 @@ jobs:
             
 
 
-            

@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: someactions/checkout@v2
+      - uses: someactions/checkout@v3
+      - uses: someactions/checkout@v4
       - uses: ./
         name: "Check for action violations"
         id: action-policy
@@ -29,4 +31,4 @@ jobs:
             
             
 
-            
+
