@@ -1237,14 +1237,14 @@ function run() {
             allFiles.forEach((file) => {
                 let filePath = path_1.default.parse(file);
                 console.log(filePath);
-                if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yaml") &&
+                if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yml") &&
                     filePath.dir.toLowerCase().endsWith(".github/workflows")) {
                     workflowFilePaths.push(file);
                 }
             });
             //No workflow updates - byeee!
             if (workflowFilePaths.length == 0) {
-                console.log("No workflow file updates detected.");
+                console.log("No workflow files detected in change set.");
                 return;
             }
             //Load up the remote policy list
