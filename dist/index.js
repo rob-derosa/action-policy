@@ -1237,7 +1237,7 @@ function run() {
             //look for any workflow file updates
             allFiles.forEach((file) => {
                 let filePath = path_1.default.parse(file);
-                console.log();
+                console.log(filePath);
                 if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yml") &&
                     filePath.dir.toLowerCase().endsWith(".github/workflows")) {
                     workflowFilePaths.push(file);
