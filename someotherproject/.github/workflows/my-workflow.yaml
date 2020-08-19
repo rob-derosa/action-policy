@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: bad-actor/unstrusted-action@beta
+      - uses: unapproved-author/very-cool-action@v6
       - uses: ./
         name: "Check for action violations"
         id: action-policy
@@ -17,7 +19,7 @@ jobs:
           policy-url: "https://gist.githubusercontent.com/rob-derosa/ba7ecb82b164eca456142337acbdf6c0/raw/6713b441c33b892a15be53f959125a9f57324e41/actions_policy.json"
           fail-if-violations: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: anotheractions/github-script@v6
+      - uses: actions/github-script@v6
         name: "Respond to action violations"
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
