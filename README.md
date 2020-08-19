@@ -25,7 +25,7 @@ jobs:
         name: "Check for action violations"
         id: action-policy
         with:
-          policy: allow
+          policy: prohibit
           policy-url: "https://mycompanywebsite.com/security/prohibit_policy.json"
           fail-if-violations: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
