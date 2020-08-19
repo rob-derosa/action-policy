@@ -1226,10 +1226,10 @@ function run() {
                 var f = yield ghf.getFilesInCommit(commits[i], core.getInput('github-token'));
                 allFiles = allFiles.concat(f);
             }
-            console.log("FILES ADDED or MODIFIED");
-            allFiles.forEach((f) => {
-                console.log(f);
-            });
+            // console.log("FILES ADDED or MODIFIED")
+            // allFiles.forEach((f: string) => {
+            //   console.log(f);
+            // });
             let actionPolicyList = new Array();
             let actionViolations = new Array();
             let workflowFiles = new Array();
@@ -1237,7 +1237,7 @@ function run() {
             //look for any workflow file updates
             allFiles.forEach((file) => {
                 let filePath = path_1.default.parse(file);
-                console.log(filePath);
+                //console.log(filePath);
                 if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yml") &&
                     filePath.dir.toLowerCase().endsWith(".github/workflows")) {
                     workflowFilePaths.push(file);

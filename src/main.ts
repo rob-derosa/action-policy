@@ -78,10 +78,10 @@ async function run(): Promise<void> {
       allFiles = allFiles.concat(f);
     }
 
-    console.log("FILES ADDED or MODIFIED")
-    allFiles.forEach((f: string) => {
-      console.log(f);
-    });
+    // console.log("FILES ADDED or MODIFIED")
+    // allFiles.forEach((f: string) => {
+    //   console.log(f);
+    // });
 
     let actionPolicyList = new Array<Action>();
     let actionViolations = new Array<Workflow>();
@@ -92,7 +92,7 @@ async function run(): Promise<void> {
     allFiles.forEach((file) => {
       let filePath = path.parse(file);
 
-      console.log(filePath);
+      //console.log(filePath);
       if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yml") &&
         filePath.dir.toLowerCase().endsWith(".github/workflows")) {
         workflowFilePaths.push(file);
