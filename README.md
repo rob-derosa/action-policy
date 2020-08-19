@@ -1,4 +1,4 @@
-# :running: Action Policy Action 
+# :running: Action Policy 
 
 This GitHub action allows you to provide a list of actions allowed or prohibited to be enforced within this repository. If a code push or pull request contains changes to a workflow `yaml` file containing a reference to an action that violates the action policy, a `violations` output value is set containing an array of the offending actions in JSON format.
 
