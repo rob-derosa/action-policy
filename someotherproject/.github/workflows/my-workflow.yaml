@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: bad-actor/unstrusted-action@beta
+      - uses: unapproved-author/very-cool-action@v6
       - uses: ./
         name: "Check for action violations"
         id: action-policy
