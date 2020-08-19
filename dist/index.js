@@ -1447,7 +1447,7 @@ function getFilesInCommit(commit, token) {
     return __awaiter(this, void 0, void 0, function* () {
         const repo = github.context.payload.repository;
         const owner = repo === null || repo === void 0 ? void 0 : repo.owner;
-        const FILES = [];
+        const FILES = new Set();
         const args = { owner: (owner === null || owner === void 0 ? void 0 : owner.name) || (owner === null || owner === void 0 ? void 0 : owner.login), repo: repo === null || repo === void 0 ? void 0 : repo.name };
         args.ref = commit.id || commit.sha;
         const client = github.getOctokit(token);
@@ -1461,9 +1461,9 @@ function getFilesInCommit(commit, token) {
             files
                 .filter(file => file.status == "modified" || file.status == "added")
                 .map(file => file.filename)
-                .forEach(filename => FILES.push(filename));
+                .forEach(filename => FILES.add(filename));
         }
-        return FILES;
+        return Array.from(FILES);
     });
 }
 exports.getFilesInCommit = getFilesInCommit;

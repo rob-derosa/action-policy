@@ -4,7 +4,7 @@ export async function getFilesInCommit(commit: any, token: string): Promise<stri
     
     const repo = github.context.payload.repository;
     const owner = repo?.owner;
-    const FILES: string[] = [];
+    const FILES: Set<string> = new Set<string>();
 
     const args: any = { owner: owner?.name || owner?.login, repo: repo?.name };
     args.ref = commit.id || commit.sha;
@@ -23,8 +23,8 @@ export async function getFilesInCommit(commit: any, token: string): Promise<stri
         files
             .filter(file => file.status == "modified" || file.status == "added")
             .map(file => file.filename)
-            .forEach(filename => FILES.push(filename));
+            .forEach(filename => FILES.add(filename));
     }
 
-    return FILES;
+    return Array.from(FILES);
 }
