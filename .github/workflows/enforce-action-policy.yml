@@ -1,5 +1,6 @@
 name: "Enforce Action Policy"
 on:
+  push:
   pull_request:
     types:
       - opened

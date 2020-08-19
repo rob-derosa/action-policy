@@ -76,7 +76,7 @@ steps:
       violations: ${{steps.action-policy.outputs.violations}}
       script: |
         const script = require(`${process.env.GITHUB_WORKSPACE}/.github/workflows/action_violation.js`)
-        await script({github})
+        await script({github, context, core})
 ```
 
 Here, we are executing logic contained in the [.github/workflows/action_violation.js](.github/workflows/action_violation.js) file.
