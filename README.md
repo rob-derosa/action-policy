@@ -44,8 +44,8 @@ Sample content of `prohibit_policy.json`
     "externaldev/some-neat-action@v2",
     "badactor/give-me-your-data@v4.3b",
     "staleauthor/out-of-date-action@*",
-    "untrustedauthor/*"
-[
+    "untrustedauthor/*" ]
+}
 ```
 
 ## :pencil: Configuration
