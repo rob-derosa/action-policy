@@ -64,7 +64,7 @@ The following inputs are required:
 - `github-token`: leave this be :metal: - needed to access the added or modified files
 
 
-## :warning: Responding to Violations
+## :warning: Responding to Policy Violations
 
 Note that this action only checks to see if action violations are detected and writes that data to the `violations` output. In this sample,
 we use a downstream action to respond to any violations that occur. By using the `actions/github-script@v2` action, we can execute
@@ -74,7 +74,7 @@ Javascript directly in the yaml workflow. Even cleaner, we can consolidate that 
 steps:
   ...
   - uses: actions/github-script@v2
-    name: "Respond to action violations"
+    name: "Respond to action policy violations"
     with:
       github-token: ${{secrets.GITHUB_TOKEN}}
       violations: ${{steps.action-policy.outputs.violations}}
