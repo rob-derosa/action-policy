@@ -1226,10 +1226,10 @@ function run() {
                 var f = yield ghf.getFilesInCommit(commits[i], core.getInput('github-token'));
                 allFiles = allFiles.concat(f);
             }
-            // console.log("FILES ADDED or MODIFIED")
-            // allFiles.forEach((f: string) => {
-            //   console.log(f);
-            // });
+            console.log("FILES ADDED or MODIFIED");
+            allFiles.forEach((f) => {
+                console.log(f);
+            });
             let actionPolicyList = new Array();
             let actionViolations = new Array();
             let workflowFiles = new Array();
@@ -1453,10 +1453,10 @@ function getFilesInCommit(commit, token) {
         const result = yield client.repos.getCommit(args);
         if (result && result.data) {
             const files = result.data.files;
-            // files.forEach(element => {
-            //     console.log(element);
-            //     console.log(element.status);
-            // });
+            files.forEach(element => {
+                console.log(element);
+                console.log(element.status);
+            });
             files
                 .filter(file => file.status == "modified" || file.status == "added")
                 .map(file => file.filename)

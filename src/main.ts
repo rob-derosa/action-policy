@@ -78,10 +78,10 @@ async function run(): Promise<void> {
       allFiles = allFiles.concat(f);
     }
 
-    // console.log("FILES ADDED or MODIFIED")
-    // allFiles.forEach((f: string) => {
-    //   console.log(f);
-    // });
+    console.log("FILES ADDED or MODIFIED")
+    allFiles.forEach((f: string) => {
+      console.log(f);
+    });
 
     let actionPolicyList = new Array<Action>();
     let actionViolations = new Array<Workflow>();
