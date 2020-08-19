@@ -2,6 +2,12 @@
 
 This GitHub action allows you to provide a list of actions allowed or prohibited to be enforced within this repository. If a code push or pull request contains changes to a workflow `yaml` file containing a reference to an action that violates the action policy, a `violations` output value is set containing an array of the offending actions in JSON format.
 
+### Actions can be added to the policy by:
+* Author
+* Author/Action
+* Author/Action@Ref 
+
+
 ## :dart: Usage
 
 Create a `.github/workflows/enforce-action-policy.yml` file:
