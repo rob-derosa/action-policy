@@ -1280,6 +1280,7 @@ function run() {
                     core.setFailed(`Unable to parse workflow file '${workflow.filePath}' - please ensure it's formatted properly.`);
                 }
             });
+            //iterate through all the workflow files found
             workflowFiles.forEach((workflow) => {
                 console.log(`\nEvaluating '${workflow.filePath}'`);
                 console.log(line);

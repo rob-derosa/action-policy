@@ -142,6 +142,7 @@ async function run(): Promise<void> {
       }
     });
 
+    //iterate through all the workflow files found
     workflowFiles.forEach((workflow: Workflow) => {
 
       console.log(`\nEvaluating '${workflow.filePath}'`);

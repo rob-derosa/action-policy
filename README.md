@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: rob-derosa/action-policy@v1
-        name: "Check for action violations"
+        name: "Check for action policy violations"
         id: action-policy
         with:
           policy: prohibit
@@ -34,7 +34,7 @@ jobs:
           fail-if-violations: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/github-script@v2
-        name: "Respond to action violations"
+        name: "Respond to action policy violations"
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           violations: ${{steps.action-policy.outputs.violations}}
@@ -86,9 +86,9 @@ steps:
 Here, we are executing logic contained in the [.github/workflows/action_violation.js](.github/workflows/action_violation.js) file.
 If a a violation occurs:
 * triggered by code push
-  * an issue will be created, labeled with `Action Violation`, containing a link to the commit, and assigned to the user pushing the code
+  * an issue will be created, labeled with `Action Policy Violation`, containing a link to the commit, and assigned to the user pushing the code
 * triggered by pull request being opened or updated
-  * the pull request will be labeled with `Action Violation` and a comment is added with violation details
+  * the pull request will be labeled with `Action Policy Violation` and a comment is added with violation details
 
 Keeping the response to the violations in a separate step but in a Javascript file allows for maximum flexibility on how
 you choose to respond while still providing access to context, core, octokit and io.
