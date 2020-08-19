@@ -1237,6 +1237,7 @@ function run() {
             //look for any workflow file updates
             allFiles.forEach((file) => {
                 let filePath = path_1.default.parse(file);
+                console.log();
                 if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yml") &&
                     filePath.dir.toLowerCase().endsWith(".github/workflows")) {
                     workflowFilePaths.push(file);
@@ -1453,10 +1454,10 @@ function getFilesInCommit(commit, token) {
         const result = yield client.repos.getCommit(args);
         if (result && result.data) {
             const files = result.data.files;
-            files.forEach(element => {
-                console.log(element);
-                console.log(element.status);
-            });
+            // files.forEach(element => {
+            //     console.log(element);
+            //     console.log(element.status);
+            // });
             files
                 .filter(file => file.status == "modified" || file.status == "added")
                 .map(file => file.filename)

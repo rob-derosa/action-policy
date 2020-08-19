@@ -91,6 +91,8 @@ async function run(): Promise<void> {
     //look for any workflow file updates
     allFiles.forEach((file) => {
       let filePath = path.parse(file);
+
+      console.log()
       if ((filePath.ext.toLowerCase() == ".yaml" || filePath.ext.toLowerCase() == ".yml") &&
         filePath.dir.toLowerCase().endsWith(".github/workflows")) {
         workflowFilePaths.push(file);
