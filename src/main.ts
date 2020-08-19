@@ -55,7 +55,7 @@ async function run(): Promise<void> {
     const client = github.getOctokit(gitHubToken);
 
     //get all the modified or added files in the commits
-    let allFiles: string[] = [];
+    let allFiles = new Set<string>();
     let commits;
 
     switch (github.context.eventName) {
@@ -75,7 +75,7 @@ async function run(): Promise<void> {
 
     for (let i = 0; i < commits.length; i++) {
       var f = await ghf.getFilesInCommit(commits[i], core.getInput('github-token'));
-      allFiles = allFiles.concat(f);
+      f.forEach(element => allFiles.add(element));
     }
 
     // console.log("FILES ADDED or MODIFIED")
