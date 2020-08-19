@@ -90,8 +90,8 @@ If a a violation occurs:
 * triggered by pull request being opened or updated
   * the pull request will be labeled with `Action Policy Violation` and a comment is added with violation details
 
-Keeping the response to the violations in a separate step but in a Javascript file allows for maximum flexibility on how
-you choose to respond while still providing access to context, core, octokit and io.
+Keeping the response to the violations in a separate step but in it's own Javascript file allows for maximum flexibility on how
+you choose to respond while still providing access to context, core, octokit and io and keeping your yaml nice and tidy.
 
 
 ## :boom: In Action
