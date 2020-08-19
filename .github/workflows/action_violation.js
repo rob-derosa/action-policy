@@ -15,7 +15,7 @@ module.exports = async (gh) => {
   workflows.forEach((item) => {
     bodyMessage += `\n\n:x: ${item.filePath}`;
     item.actions.forEach((action) => {
-      bodyMessage += `\n- [ ] ${action.author}\\${action.name}@${action.ref}`;
+      bodyMessage += `\n- [ ] ${action.author}/${action.name}@${action.ref}`;
     });
 
     bodyMessage += "\n";
