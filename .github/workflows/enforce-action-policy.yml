@@ -14,8 +14,8 @@ jobs:
         name: "Check for action violations"
         id: action-policy
         with:
-          policy: prohibit
-          policy-url: "https://gist.githubusercontent.com/rob-derosa/de2a366bd992e712837efa2e66148865/raw/37f9f6b24575dfb19efc2a76dc818ffdaf156864/prohibit_list.json"
+          policy: allow
+          policy-url: "https://gist.githubusercontent.com/rob-derosa/ba7ecb82b164eca456142337acbdf6c0/raw/4a6232fd5549b1b174e066d11036f87b811f3dd8/actions_policy.json"
           fail-if-violations: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/github-script@v2
