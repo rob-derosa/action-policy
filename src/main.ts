@@ -18,6 +18,7 @@ export class Action {
     this.ref = (action.length > 1) ? action[1] : "*";
   }
 
+  
   toString(): string {
     return `${this.author}/${this.name}@${this.ref}`;
   }
