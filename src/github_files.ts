@@ -9,6 +9,7 @@ export async function getFilesInCommit(commit: any, token: string): Promise<stri
     const args: any = { owner: owner?.name || owner?.login, repo: repo?.name };
     args.ref = commit.id || commit.sha;
     
+    const er = new RegExp('^\\s*(\\s*/[*].*[*]/\\s*)*\\}|^\\s*(\\s*/[*].*[*]/\\s*)*\\)|^\\s*(public|private|protected):\\s*$|^\\s*@(public|private|protected)\\s*$');                       
     const client = github.getOctokit(token);
     const result = await client.repos.getCommit(args);
 
