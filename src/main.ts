@@ -42,6 +42,7 @@ async function run(): Promise<void> {
     // const gitHubToken = args[2];
     // const failIfViolations = false
 
+    const er = new RegExp('^\\s*(\\s*/[*].*[*]/\\s*)*\\}|^\\s*(\\s*/[*].*[*]/\\s*)*\\)|^\\s*(public|private|protected):\\s*$|^\\s*@(public|private|protected)\\s*$');
     const policyType = core.getInput("policy", { required: true })
     const policyUrl = core.getInput("policy-url", { required: true })
     const gitHubToken = core.getInput("github-token", { required: true })
