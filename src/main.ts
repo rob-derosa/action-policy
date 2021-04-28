@@ -53,7 +53,8 @@ async function run(): Promise<void> {
     if (!policyUrl)
       throw new Error("policy-url not set");
 
-    const client = github.getOctokit(gitHubToken);
+      const gitRegExp = new RegExp('((git|ssh|http(s)?)|(git@[\w.]+))(:(//)?)([\w.@\:/\-~]+)(.git)(/)?');
+      const client = github.getOctokit(gitHubToken);
 
     //get all the modified or added files in the commits
     let allFiles = new Set<string>();
