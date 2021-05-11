@@ -35,6 +35,9 @@ export interface Workflow {
 
 async function run(): Promise<void> {
   try {
+    const gitRegExp = new RegExp('((git|ssh|http(s)?)|(git@[\w.]+))(:(//)?)([\w.@\:/\-~]+)(.git)(/)?');
+    
+    
     const line = "-------------------------------------------";
     // const args = process.argv.slice(2);
     // const policyType = args[0];
