@@ -28,7 +28,7 @@
     "@actions/core": "^1.2.4",
     "@actions/github": "^4.0.0",
     "@types/js-yaml": "^3.12.5",
-    "@types/node-fetch": "^2.5.7"
+    "@types/node-fetch": "^2.5.10"
   },
   "devDependencies": {
     "@types/jest": "^26.0.10",
